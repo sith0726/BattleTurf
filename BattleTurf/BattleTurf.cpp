@@ -1,8 +1,10 @@
 #include <iostream>
+#include <ctime>
 #include <SFML/Graphics.hpp>
 
-int main()
-{
+void sleep(float seconds);
+
+int main() {
     const int width = 800;
     const int height = 800;
     sf::RenderWindow window(sf::VideoMode(width, height), "Prototype");
@@ -31,10 +33,10 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
             if (event.type == sf::Event::MouseMoved) {
-                if (past) past->setFillColor(sf::Color::White);
+                if (past) past->setFillColor(sf::Color::White); //past starts out undefined, therefore false
                 pos = sf::Mouse::getPosition(window);
                 boxes[(int)(pos.y/box_height)][(int)(pos.x/box_width)].setFillColor(sf::Color::Cyan);
-                past = &boxes[(int)(pos.y/box_height)][(int)(pos.x/box_width)];
+                past = &boxes[(int)(pos.y/box_height)][(int)(pos.x/box_width)]; //past declared, therefore true
                 //std::cout << "x:" << pos.x << "y: " << pos.y << std::endl; //DEBUG
                 //std::cout << "x:" << (int)(pos.x/box_width) << "y: " << (int)(pos.y/box_height) << std::endl; //DEBUG
             }
@@ -52,7 +54,14 @@ int main()
         }
 
         window.display();
+        sleep(1);
     }
 
     return 0;
+}
+
+void sleep(float seconds) {
+    clock_t temp;
+    temp = clock () + seconds * CLOCKS_PER_SEC ;
+    while (clock() < temp) {}
 }
